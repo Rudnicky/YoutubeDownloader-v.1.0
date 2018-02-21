@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ToastNotifications.Messages;
-using VideoLibrary;
 
 namespace YoutubeDownloader
 {
@@ -15,78 +14,44 @@ namespace YoutubeDownloader
         #region Fields and Properties
         private ConnectionHelper _connectionHelper;
         private CursorControl _cursor;
-        private Converter _converter;
-        private FileHelper _fileHelper;
-        private Process _process;
-        private int _currentLine;
+
 
         private ObservableCollection<Mp3Model> _mp3List;
         public ObservableCollection<Mp3Model> Mp3List
         {
-            get
-            {
-                return _mp3List;
-            }
-            set
-            {
-                _mp3List = value;
-                OnPropertyChanged(nameof(Mp3List));
-            }
+            get { return _mp3List; }
+            set { SetProperty(ref _mp3List, value); }
         }
 
         private ObservableCollection<QualityModel> _qualityList;
         public ObservableCollection<QualityModel> QualityList
         {
-            get
-            {
-                return _qualityList;
-            }
-            set
-            {
-                _qualityList = value;
-                OnPropertyChanged(nameof(QualityList));
-            }
+            get { return _qualityList; }
+            set { SetProperty(ref _qualityList, value); }
         }
 
         private QualityModel _qualityModel;
         public QualityModel QualityModel
         {
-            get
-            {
-                return _qualityModel;
-            }
-            set
-            {
-                _qualityModel = value;
-                OnPropertyChanged(nameof(QualityModel));
-            }
+            get { return _qualityModel; }
+            set { SetProperty(ref _qualityModel, value); }
         }
 
         private string _youtubeLinkUrl;
         public string YoutubeLinkUrl
         {
-            get
-            {
-                return _youtubeLinkUrl;
-            }
-            set
-            {
-                _youtubeLinkUrl = value;
-                OnPropertyChanged(nameof(YoutubeLinkUrl));
-            }
+            get { return _youtubeLinkUrl; }
+            set { SetProperty(ref _youtubeLinkUrl, value); }
         }
 
         private bool _isFocused;
         public bool IsFocused
         {
-            get
-            {
-                return _isFocused;
-            }
+            get { return _isFocused; }
             set
             {
-                _isFocused = value;
-                OnPropertyChanged("IsYouTubeTextBoxFocused");
+                SetProperty(ref _isFocused, value);
+
                 if (_isFocused)
                 {
                     YoutubeLinkUrl = string.Empty;
@@ -97,16 +62,13 @@ namespace YoutubeDownloader
                 }
             }
         }
+        
         #endregion
 
         #region Commands
-        public ICommand GoButtonCommand
-        {
-            get
-            {
-                return new RelayCommand(GoButtonClicked, CanExecute);
-            }
-        }
+        public ICommand StartMp3DownloadCommand { get { return new RelayCommand<string>(StartMp3Download); } }
+
+        public ICommand OpenMp3LocationCommand { get { return new RelayCommand<Mp3Model>(OpenMp3Location); } }
         #endregion
 
         #region Constructor
@@ -118,31 +80,29 @@ namespace YoutubeDownloader
         #endregion
 
         #region Events
-        private void GoButtonClicked()
+        private void StartMp3Download(string youtubeLinkUrl)
         {
-            if (ValidateEditFieldString())
+            if (ValidateEditFieldString(youtubeLinkUrl) && CheckIfInternetConnectivityIsOn())
             {
-                if (!CheckIfFileAlreadyExists(YoutubeLinkUrl))
-                {
-                    if (CheckIfInternetConnectivityIsOn())
-                    {
-                        SaveVideoToDisk();
-                    }
-                }
+                SaveVideoToDisk(youtubeLinkUrl);   
             }
+        }
+
+        private void OpenMp3Location(Mp3Model mp3Model)
+        {
+            FileHelper.OpenInExplorer(mp3Model.Path);
+
         }
         #endregion
 
         #region Methods Private
         private void Initialize()
         {
-            this._connectionHelper = new ConnectionHelper();
-            this._converter = new Converter();
-            this._cursor = new CursorControl();
-            this._mp3List = new ObservableCollection<Mp3Model>();
-            this._fileHelper = new FileHelper();
+            _connectionHelper = new ConnectionHelper();
+            _cursor = new CursorControl();
+            _mp3List = new ObservableCollection<Mp3Model>();
 
-            this.YoutubeLinkUrl = Consts.DefaultTextBoxEntry;
+            YoutubeLinkUrl = Consts.DefaultTextBoxEntry;
         }
 
         private void InitializeQualityCollection()
@@ -158,155 +118,76 @@ namespace YoutubeDownloader
             QualityModel = QualityList[3];
         }
 
-        private void SaveVideoToDisk()
+        private void SaveVideoToDisk(string youtubeLinkUrl)
         {
             Task.Factory.StartNew(() =>
             {
-                var CurrentFile = new FileHelper();
-                var Mp3Model = new Mp3Model();
 
-                using (var service = Client.For(YouTube.Default))
+                var tempPath = FileHelper.GetTempFileName();
+
+                Mp3Model mp3Model;
+
+                using (var outFile = File.OpenWrite(tempPath))
                 {
-                    using (var video = service.GetVideo(YoutubeLinkUrl))
+                    using (var videoDownloader = new VideoDownloader(youtubeLinkUrl, outFile))
                     {
-                        CurrentFile.DefaultTrackName = video.FullName;
-                        CurrentFile.DefaultTrackPath = CurrentFile.Path + "\\" + CurrentFile.DefaultTrackName;
-                        CurrentFile.DefaultTrackHiddenPath = CurrentFile.HiddenPath + "\\" + CurrentFile.DefaultTrackName;
-                        CurrentFile.TmpTrackPath = CurrentFile.PreparePathForFFmpeg(CurrentFile.DefaultTrackHiddenPath);
+                        var destPath = FileHelper.GetMp3FilePath(videoDownloader.CurrentVideo.FullName);
 
-                        Mp3Model = new Mp3Model()
+                        mp3Model = new Mp3Model
                         {
-                            Name = CurrentFile.CheckVideoFormat(video.FullName),
-                            IsProgressDownloadVisible = Visibility.Visible,
-                            IsPercentLabelVisible = Visibility.Visible,
-                            IsConvertingLabelVisible = Visibility.Hidden,
-                            IsOperationDoneLabelVisible = Visibility.Hidden,
-                            ConvertingLabelText = Consts.ConvertingPleaseWait,
-                            CurrentProgress = 0,
+                            Name = Path.GetFileNameWithoutExtension(destPath),
+                            Path = destPath,
+                            Url = youtubeLinkUrl,
+                            State = Mp3ModelState.Downloading,
                         };
 
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        if (File.Exists(mp3Model.Path))
                         {
-                            this._mp3List.Add(Mp3Model);
-                        }));
-
-                        using (var outFile = File.OpenWrite(CurrentFile.TmpTrackPath))
-                        {
-                            using (var progressStream = new ProgressStream(outFile))
-                            {
-                                var streamLength = (long)video.StreamLength();
-
-                                progressStream.BytesMoved += (sender, args) =>
-                                {
-                                    Mp3Model.CurrentProgress = args.StreamLength * 100 / streamLength;
-                                    Debug.WriteLine($"{Mp3Model.CurrentProgress}% of video downloaded");
-                                };
-
-                                video.Stream().CopyTo(progressStream);
-                            }
+                            shortToastMessage.ShowInformation(Consts.FileAlreadyExistsInfo);
+                            return;
                         }
-                        BeforeConversion(Mp3Model);
-                        ExtractAudioFromVideo(CurrentFile);
-                        AfterConversion(Mp3Model, CurrentFile);
+
+                        FileHelper.EnsureDirectoryExist(mp3Model.Path);
+
+                        Application.Current.Dispatcher.BeginInvoke(new Action(() => _mp3List.Add(mp3Model)));
+
+                        videoDownloader.ProgressChanged += (s, a) =>
+                        {
+                            mp3Model.CurrentProgress = a.CurrentProgress;
+                            Debug.WriteLine($"{a.CurrentProgress}% of video downloaded");
+                        };
+
+                        videoDownloader.Download();
                     }
                 }
+
+
+                mp3Model.State = Mp3ModelState.Converting;             
+                DispatchService.Invoke(() => shortToastMessage.ShowInformation("Converting..."));
+
+                var converter = new Converter();
+                
+                converter.ProgressChanged += (s, a) =>  mp3Model.CurrentProgress = a.CurrentProgress;
+                
+
+                converter.ExtractAudioMp3FromVideo(tempPath, mp3Model.Path, QualityModel.Quality);
+
+                File.Delete(tempPath);
+
+                DispatchService.Invoke(() =>
+                {
+                    longToastMessage.ShowSuccess(mp3Model.Name);
+                });
+
+                mp3Model.State = Mp3ModelState.Done;
+
             });
         }
 
-        private void ExtractAudioFromVideo(FileHelper fileHelper)
-        {
-            var videoToWorkWith = fileHelper.TmpTrackPath;
-            var ffmpegExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg\\ffmpeg.exe");
-            var output = fileHelper.CheckVideoFormat(videoToWorkWith);
-            var standardErrorOutput = string.Empty;
-            var quality = QualityModel.Quality;
 
-            fileHelper.DefaultTrackHiddenPath = videoToWorkWith;
-            fileHelper.TmpTrackPath = output;
-
-            try
-            {
-                _process = new Process();
-                _process.StartInfo.UseShellExecute = false;
-                _process.StartInfo.RedirectStandardInput = true;
-                _process.StartInfo.RedirectStandardOutput = true;
-                _process.StartInfo.RedirectStandardError = true;
-                _process.StartInfo.CreateNoWindow = true;
-                _process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                _process.StartInfo.FileName = ffmpegExePath;
-                _process.StartInfo.Arguments = " -i " + videoToWorkWith + " -codec:a libmp3lame -b:a " + quality + " " + output;
-                _process.Start();
-                _process.EnableRaisingEvents = true;
-                _process.ErrorDataReceived += new DataReceivedEventHandler(OnErrorDataReceived);
-                _process.Exited += new EventHandler(OnConversionExited);
-                _process.BeginOutputReadLine();
-                _process.BeginErrorReadLine();
-                _process.WaitForExit();
-                _process.Close();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exception Occured: {0}", e);
-            }
-        }
-
-        private void OnConversionExited(object sender, EventArgs e)
-        {
-            _process.ErrorDataReceived -= OnErrorDataReceived;
-            _process.Exited -= OnConversionExited;
-        }
-
-        private void OnErrorDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            // TODO: implement logger
-            Debug.WriteLine("Input line: {0} ({1:m:s:fff})", _currentLine++, DateTime.Now);
-        }
-
-        private void BeforeConversion(Mp3Model model)
-        {
-            model.IsConvertingLabelVisible = Visibility.Visible;
-            model.IsPercentLabelVisible = Visibility.Hidden;
-            model.IsIndeterminate = true;
-
-            DispatchService.Invoke(() =>
-            {
-                shortToastMessage.ShowInformation("Converting...");
-            });
-        }
-
-        private void AfterConversion(Mp3Model model, FileHelper fileHelper)
-        {
-            DispatchService.Invoke(() =>
-            {
-                longToastMessage.ShowSuccess(fileHelper.PrepareTrackForNotification(fileHelper.DefaultTrackName));
-            });
-
-            fileHelper.RenameFile(fileHelper.TmpTrackPath, fileHelper.DefaultTrackPath);
-            fileHelper.RemoveFile(fileHelper.DefaultTrackHiddenPath);
-
-            model.IsProgressDownloadVisible = Visibility.Hidden;
-            model.IsPercentLabelVisible = Visibility.Hidden;
-            model.IsConvertingLabelVisible = Visibility.Hidden;
-            model.IsOperationDoneLabelVisible = Visibility.Visible;
-            model.ConvertingLabelText = Consts.ConvertingPleaseWait;
-            model.IsOperationDone = Consts.OperationDone;
-            model.IsIndeterminate = false;
-        }
         #endregion
 
         #region Validators
-        private bool CheckIfFileAlreadyExists(string FileName)
-        {
-            var youTube = YouTube.Default;
-            var video = youTube.GetVideo(FileName);
-
-            if (fileHelper.CheckPossibleDuplicate(video.FullName))
-            {
-                shortToastMessage.ShowInformation(Consts.FileAlreadyExistsInfo);
-                return true;
-            }
-            return false;
-        }
 
         private bool CheckIfInternetConnectivityIsOn()
         {
@@ -324,14 +205,17 @@ namespace YoutubeDownloader
             return false;
         }
 
-        private bool ValidateEditFieldString()
+        private bool ValidateEditFieldString(string youtubeLinkUrl)
         {
-            if (YoutubeLinkUrl == string.Empty)
+            var urlParser = new YoutubeUrlParser { Url = youtubeLinkUrl };
+            
+
+            if (urlParser.UrlType == YoutubeUrlType.Empty)
             {
                 shortToastMessage.ShowWarning(Consts.LinkValidatorEmpty);
                 return false;
             }
-            else if (!YoutubeLinkUrl.Contains(Consts.LinkPartValidation))
+            else if (urlParser.UrlType == YoutubeUrlType.Playlist || urlParser.UrlType == YoutubeUrlType.Error)
             {
                 shortToastMessage.ShowWarning(Consts.LinkValidatorIsNotValid);
                 YoutubeLinkUrl = Consts.DefaultTextBoxEntry;
