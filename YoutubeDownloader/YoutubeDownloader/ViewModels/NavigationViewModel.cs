@@ -106,7 +106,7 @@ namespace YoutubeDownloader
         public NavigationViewModel()
         {
             SelectedViewModel = Mp3ViewModelInstance;
-            Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitColor"];
+            Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Selected"];
         }
         #endregion
 
@@ -114,25 +114,25 @@ namespace YoutubeDownloader
         private void HomeButtonClicked()
         {
             SelectedViewModel = new HomeViewModel();
-            HomeBackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitColor"];
-            Mp4BackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitSoftColor"];
-            Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitSoftColor"];
+            HomeBackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Selected"];
+            Mp4BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Unselected"];
+            Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Unselected"];
         }
 
         private void Mp3ButtonClicked()
         {
             SelectedViewModel = Mp3ViewModelInstance;
-            Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitColor"];
-            Mp4BackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitSoftColor"];
-            HomeBackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitSoftColor"];
+            Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Selected"];
+            Mp4BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Unselected"];
+            HomeBackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Unselected"];
         }
 
         private void Mp4ButtonClicked()
         {
             SelectedViewModel = Mp4ViewModelInstance;
-            Mp4BackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitColor"];
-            Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitSoftColor"];
-            HomeBackgroundColor = (SolidColorBrush)Application.Current.Resources["GrafitSoftColor"];
+            Mp4BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Selected"];
+            Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Unselected"];
+            HomeBackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Unselected"];
         }
         #endregion
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 
 namespace YoutubeDownloader
@@ -12,6 +11,7 @@ namespace YoutubeDownloader
             Arrow();
         }
         #endregion
+
         #region Methods
         public void Wait()
         {

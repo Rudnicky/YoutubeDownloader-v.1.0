@@ -1,0 +1,40 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="Application.Background">#333333</SolidColorBrush>
+    <SolidColorBrush x:Key="Application.Foreground">#f0f8ff</SolidColorBrush>
+
+    <SolidColorBrush x:Key="DockPanel.Background.Selected">#333333</SolidColorBrush>
+    <SolidColorBrush x:Key="DockPanel.Background.Unselected">#666666</SolidColorBrush>
+
+    <SolidColorBrush x:Key="DockPanelButton.Background">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="DockPanelButton.Background.MouseOver">#00ffff</SolidColorBrush>
+    <SolidColorBrush x:Key="DockPanelButton.BorderBrush">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="DockPanelButton.Foreground">#FFFFFF</SolidColorBrush>
+
+    <SolidColorBrush x:Key="GoButton.Background">#666666</SolidColorBrush>
+    <SolidColorBrush x:Key="GoButton.Background.Pressed">#918f8f</SolidColorBrush>
+    <SolidColorBrush x:Key="GoButton.BorderBrush">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="GoButton.Foreground">#00ffff</SolidColorBrush>
+    <SolidColorBrush x:Key="GoButton.Foreground.MouseOver">Transparent</SolidColorBrush>
+
+    <SolidColorBrush x:Key="TextBox.Background">#666666</SolidColorBrush>
+    <SolidColorBrush x:Key="TextBox.BorderBrush">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="TextBox.BorderBrush.MouseOver">#00ffff</SolidColorBrush>
+    <SolidColorBrush x:Key="TextBox.Foreground">#f0f8ff</SolidColorBrush>
+
+    <SolidColorBrush x:Key="Mp3ListTextBlock.Background">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="Mp3ListTextBlock.Foreground">#333333</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ListView.Background">#666666</SolidColorBrush>
+    <SolidColorBrush x:Key="ListView.BorderBrush">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="ListView.Foreground">#f0f8ff</SolidColorBrush>
+
+    <SolidColorBrush x:Key="GridViewColumnHeader.Background">#918f8f</SolidColorBrush>
+    <SolidColorBrush x:Key="GridViewColumnHeader.BorderBrush">#333333</SolidColorBrush>
+    <SolidColorBrush x:Key="GridViewColumnHeader.Foreground">#f0f8ff</SolidColorBrush>
+    <SolidColorBrush x:Key="GridViewColumnHeader.Foreground.MouseOver">#00ffff</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ProgressBar.Foreground">#00ffff</SolidColorBrush>
+    <SolidColorBrush x:Key="ProgressBar.Foreground.IsIndeterminate">#00ffff</SolidColorBrush>
+
+</ResourceDictionary>
