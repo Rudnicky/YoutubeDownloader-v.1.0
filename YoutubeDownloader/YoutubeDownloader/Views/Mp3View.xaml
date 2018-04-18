@@ -20,8 +20,8 @@
         </Grid.RowDefinitions>
         <Grid Margin="0,0,20,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*" />
-                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="150" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -30,6 +30,7 @@
             <TextBox
                 Grid.Row="0"
                 Grid.Column="0"
+                Margin="0,0,20,0"
                 local:FocusExtension.IsFocused="{Binding IsFocused, Mode=TwoWay}"
                 Style="{DynamicResource TextBoxStyle}"
                 Text="{Binding YoutubeLinkUrl}" />
@@ -101,65 +102,47 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid>
-                <ListView ItemsSource="{Binding Mp3List}" Style="{StaticResource Mp3ListViewStyle}">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                        <Border
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="Transparent"
-                                            BorderThickness="0">
-                                            <GridViewRowPresenter
-                                                Width="Auto"
-                                                Margin="0"
-                                                HorizontalAlignment="Stretch"
-                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                Content="{TemplateBinding Content}" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="250" Header="Track Name">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Foreground="{DynamicResource Application.Foreground}" Text="{Binding Name}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="300" Header="Progress">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid Width="280">
-                                            <ProgressBar
-                                                IsIndeterminate="{Binding IsIndeterminate}"
-                                                Style="{StaticResource ProgressBarStyle}"
-                                                Visibility="{Binding IsProgressDownloadVisible}"
-                                                Value="{Binding CurrentProgress, Mode=OneWay}" />
-                                            <TextBlock
-                                                Style="{StaticResource Mp3ListTextBlockStyle}"
-                                                Text="{Binding CurrentProgress, StringFormat={}{0:0}%}"
-                                                Visibility="{Binding IsPercentLabelVisible}" />
-                                            <TextBlock
-                                                Style="{StaticResource Mp3ListTextBlockStyle}"
-                                                Text="{Binding ConvertingLabelText}"
-                                                Visibility="{Binding IsConvertingLabelVisible}" />
-                                            <TextBlock
-                                                Style="{StaticResource Mp3ListTextBlockStyle}"
-                                                Text="{Binding IsOperationDone}"
-                                                Visibility="{Binding IsOperationDoneLabelVisible}" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
+                <ListView
+                    Background="{DynamicResource ListView.Background}"
+                    BorderBrush="{DynamicResource ListView.BorderBrush}"
+                    ItemsSource="{Binding Mp3List}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250" />
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="200" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Foreground="{DynamicResource TextBox.Foreground}"
+                                    Text="{Binding Name}" />
+                                <Grid Grid.Column="2">
+                                    <ProgressBar
+                                        VerticalAlignment="Center"
+                                        IsIndeterminate="{Binding IsIndeterminate}"
+                                        Style="{StaticResource ProgressBarStyle}"
+                                        Visibility="{Binding IsProgressDownloadVisible}"
+                                        Value="{Binding CurrentProgress, Mode=OneWay}" />
+                                    <TextBlock
+                                        Style="{StaticResource Mp3ListTextBlockStyle}"
+                                        Text="{Binding CurrentProgress, StringFormat={}{0:0}%}"
+                                        Visibility="{Binding IsPercentLabelVisible}" />
+                                    <TextBlock
+                                        Style="{StaticResource Mp3ListTextBlockStyle}"
+                                        Text="{Binding ConvertingLabelText}"
+                                        Visibility="{Binding IsConvertingLabelVisible}" />
+                                    <TextBlock
+                                        Style="{StaticResource Mp3ListTextBlockStyle}"
+                                        Text="{Binding IsOperationDone}"
+                                        Visibility="{Binding IsOperationDoneLabelVisible}" />
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </Grid>
         </Grid>
