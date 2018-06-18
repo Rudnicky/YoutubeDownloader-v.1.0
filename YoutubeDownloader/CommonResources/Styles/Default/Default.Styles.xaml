@@ -39,9 +39,8 @@
 
     <!--#region GoButton Style-->
     <Style x:Key="GoButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="Margin" Value="10,5,5,5" />
-        <Setter Property="Height" Value="50" />
-        <Setter Property="Width" Value="50" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="150" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Background" Value="{DynamicResource GoButton.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource GoButton.BorderBrush}" />
@@ -53,8 +52,8 @@
                         x:Name="border"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="0"
-                        CornerRadius="30">
+                        BorderThickness="1"
+                        CornerRadius="3">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
@@ -63,48 +62,10 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{DynamicResource GoButton.Foreground.MouseOver}" />
-                <Setter Property="FontSize" Value="13" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource GoButton.Background.Pressed}" />
-                <Setter Property="FontSize" Value="13" />
             </Trigger>
-            <EventTrigger RoutedEvent="MouseEnter">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation
-                                Storyboard.TargetProperty="Height"
-                                From="50"
-                                To="55"
-                                Duration="0:0:0.300" />
-                            <DoubleAnimation
-                                Storyboard.TargetProperty="Width"
-                                From="50"
-                                To="55"
-                                Duration="0:0:0.300" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
-            </EventTrigger>
-            <EventTrigger RoutedEvent="MouseLeave">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation
-                                Storyboard.TargetProperty="Height"
-                                From="55"
-                                To="50"
-                                Duration="0:0:0.300" />
-                            <DoubleAnimation
-                                Storyboard.TargetProperty="Width"
-                                From="55"
-                                To="50"
-                                Duration="0:0:0.300" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
-            </EventTrigger>
         </Style.Triggers>
     </Style>
     <!--#endregion-->

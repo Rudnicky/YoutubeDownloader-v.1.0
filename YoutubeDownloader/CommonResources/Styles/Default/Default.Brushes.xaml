@@ -15,7 +15,7 @@
     <SolidColorBrush x:Key="GoButton.Background.Pressed">#918f8f</SolidColorBrush>
     <SolidColorBrush x:Key="GoButton.BorderBrush">Transparent</SolidColorBrush>
     <SolidColorBrush x:Key="GoButton.Foreground">#00ffff</SolidColorBrush>
-    <SolidColorBrush x:Key="GoButton.Foreground.MouseOver">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="GoButton.Foreground.MouseOver">#00ffff</SolidColorBrush>
 
     <SolidColorBrush x:Key="TextBox.Background">#666666</SolidColorBrush>
     <SolidColorBrush x:Key="TextBox.BorderBrush">Transparent</SolidColorBrush>
@@ -25,7 +25,7 @@
     <SolidColorBrush x:Key="Mp3ListTextBlock.Background">Transparent</SolidColorBrush>
     <SolidColorBrush x:Key="Mp3ListTextBlock.Foreground">#333333</SolidColorBrush>
 
-    <SolidColorBrush x:Key="ListView.Background">#666666</SolidColorBrush>
+    <SolidColorBrush x:Key="ListView.Background">#333333</SolidColorBrush>
     <SolidColorBrush x:Key="ListView.BorderBrush">Transparent</SolidColorBrush>
     <SolidColorBrush x:Key="ListView.Foreground">#f0f8ff</SolidColorBrush>
 
