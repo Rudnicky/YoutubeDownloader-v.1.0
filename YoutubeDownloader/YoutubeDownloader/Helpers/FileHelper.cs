@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using YoutubeDownloader.Interfaces;
 
 namespace YoutubeDownloader
 {
-    public sealed class FileHelper
+    public sealed class FileHelper : IFileHelper
     {
         #region Fields & Properties
         private static readonly string _folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -63,7 +64,7 @@ namespace YoutubeDownloader
             }
         }
 
-        internal void RemoveFile(string path)
+        public void RemoveFile(string path)
         {
             try
             {
@@ -112,7 +113,7 @@ namespace YoutubeDownloader
             }
         }
 
-        private void CreateHiddenFolder()
+        public void CreateHiddenFolder()
         {
             try
             {
