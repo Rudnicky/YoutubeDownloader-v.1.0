@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Net;
 using System.Net.NetworkInformation;
+using YoutubeDownloader.Interfaces;
 
-namespace YoutubeDownloader
+namespace YoutubeDownloader.Helpers
 {
-    public sealed class ConnectionHelper
+    public sealed class ConnectionHelper : IConnectionHelper
     {
         #region Ctor
         public ConnectionHelper()

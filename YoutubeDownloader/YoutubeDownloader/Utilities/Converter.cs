@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using YoutubeDownloader.Interfaces;
 
 namespace YoutubeDownloader
 {
-    public class Converter
+    public class Converter : IConverter
     {
         #region Fields & Properties
         private readonly string ffmpegExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg\\ffmpeg.exe");

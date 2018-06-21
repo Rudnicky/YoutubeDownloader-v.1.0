@@ -1,16 +1,22 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using YoutubeDownloader.Interfaces;
 
 namespace YoutubeDownloader
 {
     sealed class NavigationViewModel : BaseViewModel
     {
         #region Fields and Properties
+        private IConnectionHelper _connectionHelper;
+        private ICursorControl _cursor;
+        private IConverter _converter;
+        private IFileHelper _fileHelper;
+
         private Mp3ViewModel _mp3ViewModelInstance;
         public Mp3ViewModel Mp3ViewModelInstance
         {
-            get { return _mp3ViewModelInstance ?? (_mp3ViewModelInstance = new Mp3ViewModel()); }
+            get { return _mp3ViewModelInstance ?? (_mp3ViewModelInstance = new Mp3ViewModel(_connectionHelper, _cursor, _converter, _fileHelper)); }
         }
 
         private Mp4ViewModel _mp4ViewModelInstance;
@@ -103,8 +109,13 @@ namespace YoutubeDownloader
         #endregion
 
         #region Ctor
-        public NavigationViewModel()
+        public NavigationViewModel(IConnectionHelper connectionHelper, ICursorControl cursor, IConverter converter, IFileHelper fileHelper)
         {
+            this._connectionHelper = connectionHelper;
+            this._cursor = cursor;
+            this._converter = converter;
+            this._fileHelper = fileHelper;
+
             SelectedViewModel = Mp3ViewModelInstance;
             Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Selected"];
         }
@@ -134,9 +145,6 @@ namespace YoutubeDownloader
             Mp3BackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Unselected"];
             HomeBackgroundColor = (SolidColorBrush)Application.Current.Resources["DockPanel.Background.Unselected"];
         }
-        #endregion
-
-        #region Methods
         #endregion
     }
 }

@@ -21,7 +21,5 @@
         string PreparePathForFFmpeg(string path);
 
         string PrepareTrackForNotification(string trackName);
-
-
     }
 }

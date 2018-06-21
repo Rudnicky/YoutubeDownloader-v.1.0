@@ -7,16 +7,18 @@ using System.Windows;
 using System.Windows.Input;
 using ToastNotifications.Messages;
 using VideoLibrary;
+using YoutubeDownloader.Helpers;
+using YoutubeDownloader.Interfaces;
 
 namespace YoutubeDownloader
 {
     class Mp3ViewModel : BaseViewModel
     {
         #region Fields and Properties
-        private ConnectionHelper _connectionHelper;
-        private CursorControl _cursor;
-        private Converter _converter;
-        private FileHelper _fileHelper;
+        private IConnectionHelper _connectionHelper;
+        private ICursorControl _cursor;
+        private IConverter _converter;
+        private IFileHelper _fileHelper;
         private Process _process;
         private int _currentLine;
 
@@ -110,8 +112,13 @@ namespace YoutubeDownloader
         #endregion
 
         #region Constructor
-        public Mp3ViewModel()
+        public Mp3ViewModel(IConnectionHelper connectionHelper, ICursorControl cursor, IConverter converter, IFileHelper fileHelper)
         {
+            this._connectionHelper = connectionHelper;
+            this._cursor = cursor;
+            this._converter = converter;
+            this._fileHelper = fileHelper;
+
             Initialize();
             InitializeQualityCollection();
         }
@@ -136,12 +143,7 @@ namespace YoutubeDownloader
         #region Methods Private
         private void Initialize()
         {
-            this._connectionHelper = new ConnectionHelper();
-            this._converter = new Converter();
-            this._cursor = new CursorControl();
             this._mp3List = new ObservableCollection<Mp3Model>();
-            this._fileHelper = new FileHelper();
-
             this.YoutubeLinkUrl = Consts.DefaultTextBoxEntry;
         }
 

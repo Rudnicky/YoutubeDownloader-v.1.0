@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using YoutubeDownloader.Interfaces;
 
-namespace YoutubeDownloader
+namespace YoutubeDownloader.Helpers
 {
     public sealed class FileHelper : IFileHelper
     {

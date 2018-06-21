@@ -1,9 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using YoutubeDownloader.Interfaces;
 
 namespace YoutubeDownloader
 {
-    public sealed class CursorControl
+    public sealed class CursorControl : ICursorControl
     {
         #region Ctor
         public CursorControl()
