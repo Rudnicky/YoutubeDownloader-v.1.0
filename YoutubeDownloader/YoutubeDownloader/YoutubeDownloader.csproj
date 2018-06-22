@@ -177,13 +177,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\YoutubeLogo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CommonResources\CommonResources.csproj">
       <Project>{b567ab80-6288-4d36-9d58-a18d4b9512fb}</Project>
       <Name>CommonResources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\deer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

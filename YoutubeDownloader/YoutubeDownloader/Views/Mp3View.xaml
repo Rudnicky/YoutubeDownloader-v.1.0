@@ -111,6 +111,8 @@
             </Grid.RowDefinitions>
             <Grid>
                 <ListView
+                    Margin="0,10,0,0"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     Background="{DynamicResource ListView.Background}"
                     BorderBrush="{DynamicResource ListView.BorderBrush}"
                     ItemsSource="{Binding Mp3List}">
@@ -118,9 +120,9 @@
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="250" />
-                                    <ColumnDefinition Width="50" />
-                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="210" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Grid.Column="0"
