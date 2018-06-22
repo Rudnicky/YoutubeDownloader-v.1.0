@@ -6,11 +6,14 @@
     xmlns:local="clr-namespace:YoutubeDownloader"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
-    Width="800"
-    Height="620"
-    Background="{DynamicResource DockPanel.Background.Unselected}"
+    Width="570"
+    Height="510"
+    AllowsTransparency="True"
+    Background="Transparent"
     FocusManager.FocusedElement="{Binding ElementName=Mp3Button}"
     Loaded="Window_Loaded"
+    ResizeMode="NoResize"
+    WindowStyle="None"
     mc:Ignorable="d">
     <Window.Resources>
         <DataTemplate DataType="{x:Type local:HomeViewModel}">
@@ -23,47 +26,76 @@
             <local:Mp4View />
         </DataTemplate>
     </Window.Resources>
-    <DockPanel LastChildFill="True">
-        <StackPanel
-            x:Name="navigation"
-            Width="100"
-            DockPanel.Dock="Left">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Background="{Binding HomeBackgroundColor}" />
-                <Grid Grid.Row="1" Background="{Binding Mp3BackgroundColor}" />
-                <Grid Grid.Row="2" Background="{Binding Mp4BackgroundColor}" />
-                <Button
-                    Grid.Row="0"
-                    Command="{Binding HomeButtonCommand}"
-                    Content="Home"
-                    Style="{DynamicResource DockPanelButtonStyle}" />
-                <Button
-                    x:Name="Mp3Button"
-                    Grid.Row="1"
-                    Command="{Binding Mp3ButtonCommand}"
-                    Content="Mp3"
-                    Style="{DynamicResource DockPanelButtonStyle}" />
-                <Button
-                    x:Name="Mpp4Button"
-                    Grid.Row="2"
-                    Command="{Binding Mp4ButtonCommand}"
-                    Content="Mp4"
-                    Style="{DynamicResource DockPanelButtonStyle}" />
-            </Grid>
-        </StackPanel>
-        <ContentControl
-            x:Name="Views"
-            Content="{Binding SelectedViewModel}"
-            DockPanel.Dock="Right" />
-    </DockPanel>
+    <Grid Margin="20" Background="{DynamicResource DockPanel.Background.Unselected}">
+        <Grid.Effect>
+            <DropShadowEffect
+                BlurRadius="15"
+                Direction="-90"
+                RenderingBias="Quality"
+                ShadowDepth="2" />
+        </Grid.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border
+                Grid.Row="0"
+                Background="{DynamicResource Application.TitleBar.Background}"
+                BorderBrush="{DynamicResource Application.TitleBar.BorderBrush}"
+                BorderThickness="1"
+                MouseDown="Border_MouseDown">
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        Margin="0,0,20,0"
+                        Content="Close"
+                        Click="CloseButton_Click"
+                        Style="{DynamicResource TitlebarButtonStyle}" />
+                </StackPanel>
+            </Border>
+            <DockPanel Grid.Row="1" LastChildFill="True">
+                <StackPanel
+                    x:Name="navigation"
+                    Width="100"
+                    DockPanel.Dock="Left">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Background="{Binding HomeBackgroundColor}" />
+                        <Grid Grid.Row="1" Background="{Binding Mp3BackgroundColor}" />
+                        <Grid Grid.Row="2" Background="{Binding Mp4BackgroundColor}" />
+                        <Button
+                            Grid.Row="0"
+                            Command="{Binding HomeButtonCommand}"
+                            Content="Home"
+                            Style="{DynamicResource DockPanelButtonStyle}" />
+                        <Button
+                            x:Name="Mp3Button"
+                            Grid.Row="1"
+                            Command="{Binding Mp3ButtonCommand}"
+                            Content="Mp3"
+                            Style="{DynamicResource DockPanelButtonStyle}" />
+                        <Button
+                            x:Name="Mpp4Button"
+                            Grid.Row="2"
+                            Command="{Binding Mp4ButtonCommand}"
+                            Content="Mp4"
+                            Style="{DynamicResource DockPanelButtonStyle}" />
+                    </Grid>
+                </StackPanel>
+                <ContentControl
+                    x:Name="Views"
+                    Content="{Binding SelectedViewModel}"
+                    DockPanel.Dock="Right" />
+            </DockPanel>
+        </Grid>
+    </Grid>
 </Window>

@@ -6,10 +6,10 @@
     xmlns:local="clr-namespace:YoutubeDownloader"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="300"
-    d:DesignWidth="400"
+    d:DesignWidth="350"
     Background="{DynamicResource Application.Background}"
     mc:Ignorable="d">
-    <Grid Margin="50,0,20,0">
+    <Grid Margin="20,0,20,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -18,10 +18,10 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Margin="0,0,20,0">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="50" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -30,7 +30,7 @@
             <TextBox
                 Grid.Row="0"
                 Grid.Column="0"
-                Margin="0,0,20,0"
+                Margin="0,0,10,0"
                 local:FocusExtension.IsFocused="{Binding IsFocused, Mode=TwoWay}"
                 Style="{DynamicResource TextBoxStyle}"
                 Text="{Binding YoutubeLinkUrl}" />
@@ -44,9 +44,11 @@
                 Style="{DynamicResource GoButtonStyle}" />
             <GroupBox
                 Grid.Row="1"
-                Width="300"
-                Margin="20,0,0,20"
-                Padding="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Width="390"
+                Margin="0"
+                Padding="1"
                 BorderThickness="0.5"
                 Foreground="AliceBlue"
                 Header="Settings">
@@ -62,14 +64,16 @@
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="25,0,0,0"
+                        Margin="0,0,0,0"
+                        HorizontalAlignment="Left"
                         Content="Format:"
                         FontSize="12"
                         Foreground="AliceBlue" />
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        Margin="25,0,0,0"
+                        Margin="0,0,0,0"
+                        HorizontalAlignment="Left"
                         Content="Quality:"
                         FontSize="12"
                         Foreground="AliceBlue" />
@@ -77,14 +81,18 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Width="90"
+                        Height="20"
                         Margin="2"
-                        HorizontalAlignment="Right" />
+                        HorizontalAlignment="Right"
+                        Background="{DynamicResource ComboBox.Background}" />
                     <ComboBox
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="90"
+                        Height="20"
                         Margin="2"
                         HorizontalAlignment="Right"
+                        Background="{DynamicResource ComboBox.Background}"
                         DisplayMemberPath="Quality"
                         ItemsSource="{Binding QualityList}"
                         SelectedItem="{Binding QualityModel}" />
