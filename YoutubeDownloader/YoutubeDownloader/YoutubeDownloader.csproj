@@ -100,6 +100,7 @@
     <Compile Include="Interfaces\IConverter.cs" />
     <Compile Include="Interfaces\ICursorControl.cs" />
     <Compile Include="Interfaces\IFileHelper.cs" />
+    <Compile Include="Models\FormatModel.cs" />
     <Compile Include="Models\Mp3Model.cs" />
     <Compile Include="Models\QualityModel.cs" />
     <Compile Include="Utilities\Converter.cs" />

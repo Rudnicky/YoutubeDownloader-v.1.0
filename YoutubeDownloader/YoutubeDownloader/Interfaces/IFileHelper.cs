@@ -10,13 +10,13 @@
 
         void RemoveContent(string path);
 
-        void RenameFile(string oldNamePath, string newNamePath);
+        void RenameFile(string oldNamePath, string newNamePath, string extension);
 
         void CreateHiddenFolder();
 
         bool CheckPossibleDuplicate(string fileName);
 
-        string CheckVideoFormat(string path);
+        string CheckVideoFormat(string path, string extension);
 
         string PreparePathForFFmpeg(string path);
 

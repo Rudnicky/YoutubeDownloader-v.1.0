@@ -9,6 +9,7 @@ using ToastNotifications.Messages;
 using VideoLibrary;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Interfaces;
+using YoutubeDownloader.Models;
 
 namespace YoutubeDownloader
 {
@@ -61,6 +62,34 @@ namespace YoutubeDownloader
             {
                 _qualityModel = value;
                 OnPropertyChanged(nameof(QualityModel));
+            }
+        }
+
+        private ObservableCollection<FormatModel> _formatList;
+        public ObservableCollection<FormatModel> FormatList
+        {
+            get
+            {
+                return _formatList;
+            }
+            set
+            {
+                _formatList = value;
+                OnPropertyChanged(nameof(FormatList));
+            }
+        }
+
+        private FormatModel _formatModel;
+        public FormatModel FormatModel
+        {
+            get
+            {
+                return _formatModel;
+            }
+            set
+            {
+                _formatModel = value;
+                OnPropertyChanged(nameof(FormatModel));
             }
         }
 
@@ -121,6 +150,7 @@ namespace YoutubeDownloader
 
             Initialize();
             InitializeQualityCollection();
+            InitializeFormatCollection();
         }
         #endregion
 
@@ -160,6 +190,17 @@ namespace YoutubeDownloader
             QualityModel = QualityList[3];
         }
 
+        private void InitializeFormatCollection()
+        {
+            FormatList = new ObservableCollection<FormatModel>
+            {
+                new FormatModel() { Format = "mp3" },
+                new FormatModel() { Format = "wav" }
+            };
+
+            FormatModel = FormatList[0];
+        }
+
         private void SaveVideoToDisk()
         {
             Task.Factory.StartNew(() =>
@@ -178,7 +219,7 @@ namespace YoutubeDownloader
 
                         Mp3Model = new Mp3Model()
                         {
-                            Name = CurrentFile.CheckVideoFormat(video.FullName),
+                            Name = CurrentFile.CheckVideoFormat(video.FullName, FormatModel.Format),
                             IsProgressDownloadVisible = Visibility.Visible,
                             IsPercentLabelVisible = Visibility.Visible,
                             IsConvertingLabelVisible = Visibility.Hidden,
@@ -219,7 +260,7 @@ namespace YoutubeDownloader
         {
             var videoToWorkWith = fileHelper.TmpTrackPath;
             var ffmpegExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg\\ffmpeg.exe");
-            var output = fileHelper.CheckVideoFormat(videoToWorkWith);
+            var output = fileHelper.CheckVideoFormat(videoToWorkWith, FormatModel.Format);
             var standardErrorOutput = string.Empty;
             var quality = QualityModel.Quality;
 
@@ -283,7 +324,7 @@ namespace YoutubeDownloader
                 longToastMessage.ShowSuccess(fileHelper.PrepareTrackForNotification(fileHelper.DefaultTrackName));
             });
 
-            fileHelper.RenameFile(fileHelper.TmpTrackPath, fileHelper.DefaultTrackPath);
+            fileHelper.RenameFile(fileHelper.TmpTrackPath, fileHelper.DefaultTrackPath, FormatModel.Format);
             fileHelper.RemoveFile(fileHelper.DefaultTrackHiddenPath);
 
             model.IsProgressDownloadVisible = Visibility.Hidden;

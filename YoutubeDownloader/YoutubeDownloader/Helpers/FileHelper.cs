@@ -93,11 +93,11 @@ namespace YoutubeDownloader.Helpers
             }
         }
 
-        public void RenameFile(string oldNamePath, string newNamePath)
+        public void RenameFile(string oldNamePath, string newNamePath, string extension)
         {
             try
             {
-                var newPath = CheckVideoFormat(newNamePath);
+                var newPath = CheckVideoFormat(newNamePath, extension);
                 if (newPath.Contains(_youtubeLastPartString))
                 {
                     File.Move(oldNamePath, newPath.Replace(_youtubeLastPartString, string.Empty));
@@ -143,16 +143,16 @@ namespace YoutubeDownloader.Helpers
             }
         }
 
-        public string CheckVideoFormat(string path)
+        public string CheckVideoFormat(string path, string extension)
         {
             if (path.Contains(".webm"))
             {
-                return path.Replace(".webm", ".mp3")
+                return path.Replace(".webm", "." + extension)
                     .Replace(Consts.TemporaryDirectoryName, Consts.DefaultDirectoryName);
             }
             else if (path.Contains(".mp4"))
             {
-                return path.Replace(".mp4", ".mp3")
+                return path.Replace(".mp4", "." + extension)
                     .Replace(Consts.TemporaryDirectoryName, Consts.DefaultDirectoryName);
             }
             return string.Empty;

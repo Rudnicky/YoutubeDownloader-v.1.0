@@ -85,6 +85,9 @@
                         Height="20"
                         Margin="2"
                         HorizontalAlignment="Right"
+                        DisplayMemberPath="Format"
+                        ItemsSource="{Binding FormatList}"
+                        SelectedItem="{Binding FormatModel}"
                         Background="{DynamicResource ComboBox.Background}" />
                     <ComboBox
                         Grid.Row="1"
