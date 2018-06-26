@@ -2,6 +2,7 @@
     x:Class="YoutubeDownloader.Mp3View"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="clr-namespace:YoutubeDownloader.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:YoutubeDownloader"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -112,13 +113,17 @@
             <Grid>
                 <ListView
                     Margin="0,10,0,0"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    b:TouchScrollBehavior.TouchScroll="VERTICAL"
                     Background="{DynamicResource ListView.Background}"
                     BorderBrush="{DynamicResource ListView.BorderBrush}"
-                    ItemsSource="{Binding Mp3List}">
+                    ItemsSource="{Binding Mp3List}"
+                    ScrollViewer.CanContentScroll="True"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.PanningMode="None"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid x:Name="Root">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150" />
                                     <ColumnDefinition Width="20" />
