@@ -149,8 +149,6 @@ namespace YoutubeDownloader
             this._fileHelper = fileHelper;
 
             Initialize();
-            InitializeQualityCollection();
-            InitializeFormatCollection();
         }
         #endregion
 
@@ -175,6 +173,9 @@ namespace YoutubeDownloader
         {
             this._mp3List = new ObservableCollection<Mp3Model>();
             this.YoutubeLinkUrl = Consts.DefaultTextBoxEntry;
+
+            InitializeQualityCollection();
+            InitializeFormatCollection();
         }
 
         private void InitializeQualityCollection()
@@ -186,7 +187,6 @@ namespace YoutubeDownloader
                 new QualityModel() { Quality = "256k" },
                 new QualityModel() { Quality = "320k" },
             };
-
             QualityModel = QualityList[3];
         }
 
@@ -195,9 +195,9 @@ namespace YoutubeDownloader
             FormatList = new ObservableCollection<FormatModel>
             {
                 new FormatModel() { Format = "mp3" },
-                new FormatModel() { Format = "wav" }
+                new FormatModel() { Format = "wav" },
+                new FormatModel() { Format = "wma" }
             };
-
             FormatModel = FormatList[0];
         }
 
