@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using Unity;
-using YoutubeDownloader.Helpers;
-using YoutubeDownloader.Interfaces;
+using YoutubeDownloader.Shared.Helpers;
+using YoutubeDownloader.Shared.Interfaces;
+using YoutubeDownloader.Shared.Utilities;
 
 // Check IoC -> http://www.technical-recipes.com/2017/a-simple-example-of-using-dependency-injection-using-unity-in-wpf/
 // Check IoC -> http://ikeptwalking.com/microsoft-unity-tutorial/

@@ -7,10 +7,10 @@ using System.Windows;
 using System.Windows.Input;
 using ToastNotifications.Messages;
 using VideoLibrary;
-using YoutubeDownloader.Helpers;
-using YoutubeDownloader.Interfaces;
-using YoutubeDownloader.Models;
-using YoutubeDownloader.Utilities;
+using YoutubeDownloader.Shared.Helpers;
+using YoutubeDownloader.Shared.Interfaces;
+using YoutubeDownloader.Shared.Models;
+using YoutubeDownloader.Shared.Utilities;
 
 namespace YoutubeDownloader
 {

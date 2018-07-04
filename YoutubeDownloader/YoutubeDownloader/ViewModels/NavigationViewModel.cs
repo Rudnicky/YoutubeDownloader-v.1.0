@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using YoutubeDownloader.Interfaces;
+using YoutubeDownloader.Shared.Interfaces;
+using YoutubeDownloader.Shared.Utilities;
 
 namespace YoutubeDownloader
 {

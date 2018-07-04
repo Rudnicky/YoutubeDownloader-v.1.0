@@ -6,7 +6,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/CommonResources;component/Styles/Default/Default.Merged.xaml" />
+                <ResourceDictionary Source="/YoutubeDownloader.Resources;component/Styles/Default/Default.Merged.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
