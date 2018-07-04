@@ -10,6 +10,7 @@ using VideoLibrary;
 using YoutubeDownloader.Helpers;
 using YoutubeDownloader.Interfaces;
 using YoutubeDownloader.Models;
+using YoutubeDownloader.Utilities;
 
 namespace YoutubeDownloader
 {
@@ -128,6 +129,20 @@ namespace YoutubeDownloader
                 }
             }
         }
+
+        private bool _isWholeListChecked;
+        public bool IsWholeListChecked
+        {
+            get
+            {
+                return _isWholeListChecked;
+            }
+            set
+            {
+                _isWholeListChecked = value;
+                OnPropertyChanged(nameof(IsWholeListChecked));
+            }
+        }
         #endregion
 
         #region Commands
@@ -210,47 +225,104 @@ namespace YoutubeDownloader
 
                 using (var service = Client.For(YouTube.Default))
                 {
-                    using (var video = service.GetVideo(YoutubeLinkUrl))
+                    if (IsWholeListChecked)
                     {
-                        CurrentFile.DefaultTrackName = video.FullName;
-                        CurrentFile.DefaultTrackPath = CurrentFile.Path + "\\" + CurrentFile.DefaultTrackName;
-                        CurrentFile.DefaultTrackHiddenPath = CurrentFile.HiddenPath + "\\" + CurrentFile.DefaultTrackName;
-                        CurrentFile.TmpTrackPath = CurrentFile.PreparePathForFFmpeg(CurrentFile.DefaultTrackHiddenPath);
+                        var youtubePlaylist = new YoutubePlaylist();
+                        var playlist = youtubePlaylist.GetVideosFromPlaylist(YoutubeLinkUrl);
 
-                        Mp3Model = new Mp3Model()
+                        if (playlist != null)
                         {
-                            Name = CurrentFile.CheckVideoFormat(video.FullName, FormatModel.Format),
-                            IsProgressDownloadVisible = Visibility.Visible,
-                            IsPercentLabelVisible = Visibility.Visible,
-                            IsConvertingLabelVisible = Visibility.Hidden,
-                            IsOperationDoneLabelVisible = Visibility.Hidden,
-                            ConvertingLabelText = Consts.ConvertingPleaseWait,
-                            CurrentProgress = 0,
-                        };
-
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            this._mp3List.Add(Mp3Model);
-                        }));
-
-                        using (var outFile = File.OpenWrite(CurrentFile.TmpTrackPath))
-                        {
-                            using (var progressStream = new ProgressStream(outFile))
+                            foreach (var audio in playlist)
                             {
-                                var streamLength = (long)video.StreamLength();
-
-                                progressStream.BytesMoved += (sender, args) =>
+                                using (var video = service.GetVideo(audio))
                                 {
-                                    Mp3Model.CurrentProgress = args.StreamLength * 100 / streamLength;
-                                    Debug.WriteLine($"{Mp3Model.CurrentProgress}% of video downloaded");
-                                };
+                                    CurrentFile.DefaultTrackName = video.FullName;
+                                    CurrentFile.DefaultTrackPath = CurrentFile.Path + "\\" + CurrentFile.DefaultTrackName;
+                                    CurrentFile.DefaultTrackHiddenPath = CurrentFile.HiddenPath + "\\" + CurrentFile.DefaultTrackName;
+                                    CurrentFile.TmpTrackPath = CurrentFile.PreparePathForFFmpeg(CurrentFile.DefaultTrackHiddenPath);
 
-                                video.Stream().CopyTo(progressStream);
+                                    Mp3Model = new Mp3Model()
+                                    {
+                                        Name = CurrentFile.CheckVideoFormat(video.FullName, FormatModel.Format),
+                                        IsProgressDownloadVisible = Visibility.Visible,
+                                        IsPercentLabelVisible = Visibility.Visible,
+                                        IsConvertingLabelVisible = Visibility.Hidden,
+                                        IsOperationDoneLabelVisible = Visibility.Hidden,
+                                        ConvertingLabelText = Consts.ConvertingPleaseWait,
+                                        CurrentProgress = 0,
+                                    };
+
+                                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                                    {
+                                        this._mp3List.Add(Mp3Model);
+                                    }));
+
+                                    using (var outFile = File.OpenWrite(CurrentFile.TmpTrackPath))
+                                    {
+                                        using (var progressStream = new ProgressStream(outFile))
+                                        {
+                                            var streamLength = (long)video.StreamLength();
+
+                                            progressStream.BytesMoved += (sender, args) =>
+                                            {
+                                                Mp3Model.CurrentProgress = args.StreamLength * 100 / streamLength;
+                                                Debug.WriteLine($"{Mp3Model.CurrentProgress}% of video downloaded");
+                                            };
+
+                                            video.Stream().CopyTo(progressStream);
+                                        }
+                                    }
+                                    BeforeConversion(Mp3Model);
+                                    ExtractAudioFromVideo(CurrentFile);
+                                    AfterConversion(Mp3Model, CurrentFile);
+                                }
                             }
                         }
-                        BeforeConversion(Mp3Model);
-                        ExtractAudioFromVideo(CurrentFile);
-                        AfterConversion(Mp3Model, CurrentFile);
+                    }
+                    else
+                    {
+                        using (var video = service.GetVideo(YoutubeLinkUrl))
+                        {
+                            CurrentFile.DefaultTrackName = video.FullName;
+                            CurrentFile.DefaultTrackPath = CurrentFile.Path + "\\" + CurrentFile.DefaultTrackName;
+                            CurrentFile.DefaultTrackHiddenPath = CurrentFile.HiddenPath + "\\" + CurrentFile.DefaultTrackName;
+                            CurrentFile.TmpTrackPath = CurrentFile.PreparePathForFFmpeg(CurrentFile.DefaultTrackHiddenPath);
+
+                            Mp3Model = new Mp3Model()
+                            {
+                                Name = CurrentFile.CheckVideoFormat(video.FullName, FormatModel.Format),
+                                IsProgressDownloadVisible = Visibility.Visible,
+                                IsPercentLabelVisible = Visibility.Visible,
+                                IsConvertingLabelVisible = Visibility.Hidden,
+                                IsOperationDoneLabelVisible = Visibility.Hidden,
+                                ConvertingLabelText = Consts.ConvertingPleaseWait,
+                                CurrentProgress = 0,
+                            };
+
+                            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                this._mp3List.Add(Mp3Model);
+                            }));
+
+                            using (var outFile = File.OpenWrite(CurrentFile.TmpTrackPath))
+                            {
+                                using (var progressStream = new ProgressStream(outFile))
+                                {
+                                    var streamLength = (long)video.StreamLength();
+
+                                    progressStream.BytesMoved += (sender, args) =>
+                                    {
+                                        Mp3Model.CurrentProgress = args.StreamLength * 100 / streamLength;
+                                        Debug.WriteLine($"{Mp3Model.CurrentProgress}% of video downloaded");
+                                    };
+
+                                    video.Stream().CopyTo(progressStream);
+                                }
+                            }
+                            BeforeConversion(Mp3Model);
+                            ExtractAudioFromVideo(CurrentFile);
+                            AfterConversion(Mp3Model, CurrentFile);
+                        }
                     }
                 }
             });

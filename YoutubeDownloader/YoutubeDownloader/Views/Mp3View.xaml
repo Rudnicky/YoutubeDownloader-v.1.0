@@ -15,7 +15,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="1.5*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -55,35 +55,36 @@
                 Header="Settings">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="150*" />
+                        <ColumnDefinition Width="100*" />
+                        <ColumnDefinition Width="188*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Label
+                    <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="0,0,0,0"
                         HorizontalAlignment="Left"
-                        Content="Format:"
                         FontSize="12"
-                        Foreground="AliceBlue" />
-                    <Label
+                        Foreground="AliceBlue"
+                        Text="Format:" />
+                    <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
                         Margin="0,0,0,0"
                         HorizontalAlignment="Left"
-                        Content="Quality:"
                         FontSize="12"
-                        Foreground="AliceBlue" />
+                        Foreground="AliceBlue"
+                        Text="Quality:" />
                     <ComboBox
                         Grid.Row="0"
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Width="90"
-                        Height="20"
-                        Margin="2"
+                        Height="18"
                         HorizontalAlignment="Right"
                         Background="{DynamicResource ComboBox.Background}"
                         DisplayMemberPath="Format"
@@ -91,15 +92,27 @@
                         SelectedItem="{Binding FormatModel}" />
                     <ComboBox
                         Grid.Row="1"
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Width="90"
-                        Height="20"
-                        Margin="2"
+                        Height="18"
                         HorizontalAlignment="Right"
                         Background="{DynamicResource ComboBox.Background}"
                         DisplayMemberPath="Quality"
                         ItemsSource="{Binding QualityList}"
                         SelectedItem="{Binding QualityModel}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Foreground="AliceBlue"
+                        Text="Download Whole List: " />
+                    <CheckBox
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Width="18"
+                        Height="18"
+                        IsChecked="{Binding IsWholeListChecked, Mode=TwoWay}"
+                        Margin="0,0,103,0"
+                        HorizontalAlignment="Right" />
                 </Grid>
             </GroupBox>
         </Grid>
