@@ -123,10 +123,23 @@ namespace YoutubeDownloader.Shared.Helpers
                     DirectoryInfo directoryInfo = Directory.CreateDirectory(HiddenPath);
                     directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 }
+                else
+                {
+                    CleanUpHiddenFolder();
+                }
             }
             catch (Exception e)
             {
                 Debug.WriteLine("Exception occured: {0}", e.ToString());
+            }
+        }
+
+        public void CleanUpHiddenFolder()
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(HiddenPath);
+            foreach (var file in directoryInfo.GetFiles())
+            {
+                file.Delete();
             }
         }
 

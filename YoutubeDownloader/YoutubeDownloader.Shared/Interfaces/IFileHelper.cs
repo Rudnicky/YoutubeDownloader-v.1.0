@@ -14,6 +14,8 @@
 
         void CreateHiddenFolder();
 
+        void CleanUpHiddenFolder();
+
         bool CheckPossibleDuplicate(string fileName);
 
         string CheckVideoFormat(string path, string extension);
